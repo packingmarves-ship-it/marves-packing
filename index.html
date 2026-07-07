@@ -269,7 +269,6 @@ async function initCam() {
     canvas.height = video.videoHeight || 720;
     camActive = true;
     setBadge('ready', 'Siap');
-    document.getElementById('btn-start').disabled = false;
     showStatus('✅ Kamera aktif — scan AWB untuk mulai', 'success');
     await isiDaftarKamera();
   };
@@ -278,7 +277,6 @@ async function initCam() {
     canvas.height = video.videoHeight || 720;
     camActive = true;
     setBadge('ready', 'Siap');
-    document.getElementById('btn-start').disabled = false;
     await isiDaftarKamera();
   }
 }
@@ -333,8 +331,6 @@ function startRec() {
   recorder.start();
   isRecording = true; secs = 0;
   document.getElementById('rec-indicator').style.display = 'flex';
-  document.getElementById('btn-start').disabled = true;
-  document.getElementById('btn-stop').disabled = false;
   setBadge('rec', '🔴 Merekam');
   timerInt = setInterval(() => {
     secs++;
@@ -349,8 +345,6 @@ function stopRec() {
   clearInterval(timerInt);
   isRecording = false;
   document.getElementById('rec-indicator').style.display = 'none';
-  document.getElementById('btn-start').disabled = false;
-  document.getElementById('btn-stop').disabled = true;
   setBadge('done', '✅ Video siap');
 }
 
@@ -381,12 +375,6 @@ function onPackerScan(e) {
     setStep(3); stopRec();
     setTimeout(() => { setStep(4); simpan(val); }, 300);
   }
-}
-
-function stopAndSave() {
-  const packer = document.getElementById('inp-packer').value.trim();
-  if (!packer) { showStatus('Isi nama packer dulu', 'error'); return; }
-  stopRec(); setTimeout(() => simpan(packer), 300);
 }
 
 async function simpan(packerName) {
