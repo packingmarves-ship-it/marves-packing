@@ -132,8 +132,6 @@
         </div>
       </div>
       <div class="btn-row" style="margin-top:12px;">
-        <button class="btn btn-record" id="btn-start" onclick="startRec()" disabled>▶ Manual Rekam</button>
-        <button class="btn btn-stop" id="btn-stop" onclick="stopAndSave()" disabled>⏹ Manual Stop</button>
         <button class="btn btn-retry" onclick="initCam()">🔄 Aktifkan / Coba Lagi Kamera</button>
       </div>
       <div class="progress-wrap" id="progress-wrap">
@@ -248,7 +246,7 @@ async function initCam() {
     ? { deviceId: { exact: selectedId }, width: { ideal: 1280 }, height: { ideal: 720 } }
     : { width: { ideal: 1280 }, height: { ideal: 720 } };
   try {
-    stream = await navigator.mediaDevices.getUserMedia({ video: videoConstraint, audio: true });
+    stream = await navigator.mediaDevices.getUserMedia({ video: videoConstraint });
   } catch(e1) {
     try { stream = await navigator.mediaDevices.getUserMedia({ video: videoConstraint }); }
     catch(e2) {
@@ -324,8 +322,6 @@ function startRec() {
   if (!camActive) { showStatus('Kamera belum aktif', 'error'); return; }
   chunks = []; videoBlob = null;
   const canvasStream = canvas.captureStream(30);
-  const audioTrack = stream && stream.getAudioTracks()[0];
-  if (audioTrack) canvasStream.addTrack(audioTrack);
   const mimeType = MediaRecorder.isTypeSupported('video/mp4;codecs=avc1') ? 'video/mp4;codecs=avc1'
     : MediaRecorder.isTypeSupported('video/mp4') ? 'video/mp4'
     : MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm';
